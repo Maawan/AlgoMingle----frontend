@@ -2,7 +2,7 @@ import React from 'react'
 
 const Header = () => {
   return (
-    <div className='w-full h-24  flex justify-around border-2 bg-[#f5f3f0]'>
+    <div className='w-full overflow-hidden h-24  flex justify-around border-2 bg-[#f5f3f0]'>
         <div className='flex w-[200px] cursor-pointer'>
             <img src="./logos/logo13.png" alt="" className='mx-2' />
             <img src="./logos/logo14.png" alt="" className='' />
