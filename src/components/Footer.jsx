@@ -3,8 +3,8 @@ import React from 'react'
 const Footer = () => {
   return (
     <div>
-    <div className="w-full  flex pt-8 pb-8 justify-around bg-[#f5f3f0] ">
-        <div className='items-center  sm:hidden   md:flex md:flex-wrap'>
+    <div className="w-full  phone:flex-row phone:justify-center tablet:flex tablet:justify-around pt-8 pb-8 justify-around bg-[#f5f3f0] ">
+        <div className='items-center  justify-center phone:hidden tablet:flex tablet:flex-wrap   md:flex md:flex-wrap'>
             <img src="./logos/logo12.png" alt="coulnt load image" className='cursor-pointer w-[150px] mr-2' />
             <div className='flex flex-col'>
                 <p className=' font-lumanosimo font-bold text-xl '>AlgoMingle.com</p>
@@ -45,19 +45,19 @@ const Footer = () => {
             
 
         </div>
-        <div className='flex flex-col'>
+        <div className='flex flex-col phone:mb-4 tablet:mb-0 phone:justify-center phone:items-center tablet:justify-normal tablet:items-start'>
             <p className='font-bold  font-primaryFont'>Services</p>
             <p className='font-light cursor-pointer my-1 hover:underline'>DSA Interview</p>
             <p className='font-light cursor-pointer my-1 hover:underline'>Interview with a friend</p>
             <p className='font-light cursor-pointer my-1 hover:underline'>Schedule your Interview</p>
         </div>
-        <div className='flex flex-col'>
+        <div className='flex flex-col phone:mb-4 tablet:mb-0 phone:justify-center phone:items-center tablet:justify-normal tablet:items-start'>
             <p className='font-bold font-primaryFont'>Features</p>
             <p className='font-light cursor-pointer hover:underline my-1'>Collaborative Canvas</p>
             <p className='font-light cursor-pointer hover:underline my-1'>Online Compilers</p>
             <p className='font-light cursor-pointer hover:underline my-1'>Code Judging System</p>
         </div>
-        <div className='flex flex-col'>
+        <div className='flex flex-col phone:mb-4 tablet:mb-0 phone:justify-center phone:items-center tablet:justify-normal tablet:items-start'>
             <p className='font-bold font-primaryFont'>Company</p>
             <p className='font-light cursor-pointer hover:underline my-1'>About</p>
             <p className='font-light cursor-pointer hover:underline my-1'>Values</p>
@@ -68,7 +68,7 @@ const Footer = () => {
     <div className='bg-[#f5f3f0]'>
         <div className='h-[1px] w-[90%] rounded-lg m-auto border border-[#9e9e9e]'>
     </div>
-        <div className='flex justify-around font-extralight pt-2 pb-3'>
+        <div className='flex phone:text-[12px] tablet:text-[16px] justify-around font-extralight pt-2 pb-3'>
             <p>Copyright &copy; AlgoMingle.com l All Rights Reserved</p>
             <p><span className=' cursor-pointer hover:underline'>Terms of use</span> l <span className='cursor-pointer hover:underline'>Privacy Policy</span></p>
  

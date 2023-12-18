@@ -1,8 +1,21 @@
 import React from 'react'
+import Button from '../components/Button'
 
 const Home = () => {
   return (
-    <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus aut dicta placeat adipisci ad aliquam voluptatum facere, porro quod nostrum eius quaerat ullam! Excepturi eaque aut voluptate labore similique in quibusdam facere, ratione voluptatum, eveniet quos et repellat animi quaerat omnis ullam suscipit beatae rerum? Fugiat tenetur dolorem maxime harum eligendi, hic doloribus magni natus reprehenderit esse animi ea aut dolor delectus? Asperiores perspiciatis tempore nulla consequatur, culpa ad possimus. Tempore id reprehenderit magni iure soluta optio facilis, expedita ad? Odio ratione aperiam sit quas vero soluta. Ipsam tempore eum commodi doloribus quos recusandae quam dolores magnam ex. Obcaecati, dolore consequuntur vero dolores nulla illo enim tempora aut pariatur aliquid eligendi fuga, id ex! Sapiente quas perferendis recusandae placeat blanditiis assumenda suscipit commodi vel pariatur! Similique suscipit aliquam quaerat beatae labore. Tenetur maxime veritatis magnam iusto omnis quae nemo sint, rem doloremque, ex delectus minima similique architecto? Illum reiciendis perspiciatis eligendi obcaecati facere! Alias dolorum dolores voluptate ad aperiam aspernatur esse quasi totam quas. Molestias, minus officia beatae, ea quas voluptatum, qui culpa quod delectus ipsum adipisci consectetur? Recusandae ipsam quia error sunt ea totam illo quis odio optio possimus eos, nulla dolorem. Exercitationem tenetur nam magni inventore recusandae! Facilis vero porro facere ex possimus. Illo delectus voluptatem assumenda quam dolor pariatur, nobis eos commodi dolores vero doloribus distinctio aspernatur molestias similique odit cupiditate esse dolore in earum nemo? Alias perferendis maiores, amet, excepturi obcaecati minus a natus fuga corporis aperiam laborum ipsam nisi optio dicta itaque adipisci quaerat velit doloribus ullam accusamus! Modi praesentium, libero rerum odio dolorum voluptatibus ducimus neque eligendi quas nisi labore iusto iste similique unde ex aliquid beatae sed tempora provident minus maiores dolores alias. Rem corporis, eum, vel aperiam dolor hic enim atque quasi, ipsa animi doloremque ducimus dolores voluptates eveniet magnam est. Doloribus, dignissimos! Error aperiam reiciendis consequatur placeat, pariatur nihil ea libero cupiditate, quia, exercitationem enim. Quaerat, aspernatur? Sed, obcaecati pariatur. Odio debitis incidunt totam officiis nam velit at ex vero animi ducimus accusamus similique deserunt, quaerat aliquam illum non exercitationem reprehenderit ratione iure esse dicta. Nostrum, iste mollitia vero dicta blanditiis cupiditate tempore quae odio a odit at similique. Dignissimos voluptatem temporibus alias autem dicta explicabo, magnam voluptatibus amet sint quaerat dolorum eum eligendi quis beatae nesciunt rem provident. Harum id perspiciatis dignissimos maxime mollitia dolorum blanditiis aperiam ex tempore, molestiae qui reprehenderit omnis asperiores commodi saepe! Nesciunt consequuntur obcaecati, quo modi, at maxime totam recusandae fugiat blanditiis cum cumque earum dolorum libero! Nesciunt sequi accusantium reprehenderit vitae tempore voluptates non. Laboriosam quos fugit non a. Temporibus perferendis aliquam dolorem commodi nobis asperiores nemo natus eum, fuga obcaecati nulla laboriosam nostrum dolorum, eos at neque nam error repudiandae tenetur. Ducimus magnam et libero repellat in, perspiciatis architecto amet assumenda cum esse illum, quae aliquam dolorum quibusdam possimus repudiandae est voluptates nobis, nisi nostrum quia earum recusandae! Officia sit, perspiciatis natus, blanditiis ea iste quia excepturi eaque, sequi quam fuga voluptatibus labore aspernatur quod? Aliquam saepe dolor praesentium nesciunt unde at eum.</div>
+    <div className='w-full flex  border'>
+        <div className='flex-1 border-4'>
+            <h2>Want to give Mock Interviews ?</h2>
+            <h2>with people around the world having same interest in DSA</h2>
+            <Button>
+                Click me
+            </Button>
+        </div>
+        <div className='flex-1 border-4 justify-center flex'>
+
+            <img src="./banner1.png" alt="" className='' />
+        </div>
+    </div>
   )
 }
 
