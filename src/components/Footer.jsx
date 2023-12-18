@@ -5,7 +5,7 @@ const Footer = () => {
     <div>
     <div className="w-full  flex pt-8 pb-8 justify-around bg-[#f5f3f0] ">
         <div className='items-center  sm:hidden   md:flex md:flex-wrap'>
-            <img src="/src/assets/logos/logo12.png" alt="" className='cursor-pointer w-[150px] mr-2' />
+            <img src="/src/assets/logos/logo12.png" alt="coulnt load image" className='cursor-pointer w-[150px] mr-2' />
             <div className='flex flex-col'>
                 <p className=' font-lumanosimo font-bold text-xl '>AlgoMingle.com</p>
                 <p className=' font-extralight text-sm'>A Comprehensive mock intervier platform</p>
