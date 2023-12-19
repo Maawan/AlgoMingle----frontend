@@ -5,7 +5,7 @@ const Footer = () => {
     <div>
     <div className="w-full  phone:flex-row phone:justify-center tablet:flex tablet:justify-around pt-8 pb-8 justify-around bg-[#f5f3f0] ">
         <div className='items-center  justify-center phone:hidden tablet:flex tablet:flex-wrap   md:flex md:flex-wrap'>
-            <img src="./logos/logo12.png" alt="coulnt load image" className='cursor-pointer w-[150px] mr-2' />
+            <img src="./logos/logo15.png" alt="coulnt load image" className='cursor-pointer w-[150px] mr-2' />
             <div className='flex flex-col'>
                 <p className=' font-lumanosimo font-bold text-xl '>AlgoMingle.com</p>
                 <p className=' font-extralight text-sm'>A Comprehensive mock intervier platform</p>

@@ -11,21 +11,9 @@ export class AuthService{
                 name
             }
             const result = await axios.post("signup" , data )
-            // const result = await axios({
-            //     method : "POST",
-            //     url : "signup",
-            //     withCredentials : true,
-            //     data : {
-            //         email,
-            //         password , 
-            //         name
-            //     }
-            // })
+            
             console.log(result.data);
-            if(result){
-                return true;
-            }
-            return false;
+            return result.data;
         } catch (error) {
             console.log(error);
             return false;

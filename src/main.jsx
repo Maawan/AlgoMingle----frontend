@@ -7,6 +7,9 @@ import Home from "./pages/Home.jsx";
 import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 import store from "./store/store.js";
+import Signin from "./pages/Signin.jsx";
+import Loading from "./components/Loading.jsx";
+import Register from "./pages/Register.jsx";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +20,14 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
+      {
+        path : "/login",
+        element: <Signin />
+      },
+      {
+        path: "/register",
+        element: <Register />
+      }
     ],
   },
 ]);
@@ -24,6 +35,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <Toaster />
+    <Loading />
     <RouterProvider router={router} />
   </Provider>
 );

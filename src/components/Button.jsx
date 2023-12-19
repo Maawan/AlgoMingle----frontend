@@ -1,10 +1,10 @@
 import React from 'react'
 
-const Button = ({children}) => {
+const Button =  ({className,value, ...props} , ref) => {
   return (
-    <div className='flex bg-[#ED5B2D]'>
-        <p>{children}</p>
-    </div>
+    <button ref={ref} className={`py-2 px-4 bg-[#ED5B2D] transition-all duration-200  rounded-md text-white font-semibold border-white border shadow-lg hover:bg-[#D55128] ${className}`} {...props}>
+        <p>{value}</p>
+    </button>
   )
 }
 
