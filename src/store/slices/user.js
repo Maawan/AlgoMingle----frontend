@@ -8,9 +8,12 @@ const userSlice = createSlice({
     initialState,
     reducers : {
         login: (state , action)=>{
-            const {tempToken , user} = action.payload;
+            if(action.payload !== null){
+                const {tempToken , user} = action.payload;
             state.token = tempToken;
             state.userData = user;
+            }
+            
         },
         signout : (state , action) => {
             state.token = "";

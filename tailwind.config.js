@@ -14,7 +14,8 @@ export default {
       fontFamily: {
         'primaryFont' : ['Montserrat'],
         'secondaryFont' : ['Signika Negative'],
-        'lumanosimo' : ['Lumanosimo']
+        'lumanosimo' : ['Lumanosimo'],
+        'poppins' : ['Poppins']
         
       }
     },

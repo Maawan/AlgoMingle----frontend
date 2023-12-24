@@ -1,14 +1,18 @@
 import React from 'react'
+import { useNavigate } from 'react-router';
 
 const Footer = () => {
+    const navigate = useNavigate();
   return (
     <div>
-    <div className="w-full  phone:flex-row phone:justify-center tablet:flex tablet:justify-around pt-8 pb-8 justify-around bg-[#f5f3f0] ">
+    <div className="w-full  border-t-2 phone:flex-row phone:justify-center tablet:flex tablet:justify-around pt-8 pb-8 justify-around bg-[#f5f3f0] ">
         <div className='items-center  justify-center phone:hidden tablet:flex tablet:flex-wrap   md:flex md:flex-wrap'>
-            <img src="./logos/logo15.png" alt="coulnt load image" className='cursor-pointer w-[150px] mr-2' />
+            <img onClick={(e)=>{
+                navigate("/")
+            }} src="/logos/logo15.png" alt="coulnt load image" className='cursor-pointer w-[150px] mr-2' />
             <div className='flex flex-col'>
                 <p className=' font-lumanosimo font-bold text-xl '>AlgoMingle.com</p>
-                <p className=' font-extralight text-sm'>A Comprehensive mock intervier platform</p>
+                <p className=' font-extralight text-sm'>A Comprehensive Mock Intervier Platform</p>
                 <div class="flex justify-normal mt-2 space-x-4">
             <a href="#" class="text-gray-400 hover:text-gray-500">
                 <span class="sr-only">Facebook</span>

@@ -10,6 +10,12 @@ import store from "./store/store.js";
 import Signin from "./pages/Signin.jsx";
 import Loading from "./components/Loading.jsx";
 import Register from "./pages/Register.jsx";
+import RandomLockInterviewLobby from "./pages/RandomLockInterviewLobby.jsx";
+import MockInterviewWithFriend from "./pages/RandomLockInterviewLobby.jsx";
+import Lobby from "./pages/Interview/Lobby.jsx";
+import Signout from "./pages/Signout.jsx";
+import ForgotPassword from "./pages/ForgotPassword.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +33,26 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />
+      },
+      {
+        path : "/mock-interview-with-friend",
+        element:<MockInterviewWithFriend />
+      },
+      {
+        path : "/interview/lobby",
+        element : <Lobby />
+      },
+      {
+        path : "/logout",
+        element : <Signout />
+      },
+      {
+        path : "/forgotpassword",
+        element: <ForgotPassword />
+      },
+      {
+        path : "/reset/password/:forgotToken",
+        element : <ResetPassword />
       }
     ],
   },
@@ -34,7 +60,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <Toaster />
+    <Toaster 
+    position="bottom-center"
+    reverseOrder={false}/>
     <Loading />
     <RouterProvider router={router} />
   </Provider>

@@ -49,14 +49,15 @@ const Register = () => {
     try {
         
         const res = await authService.signUp({email , password , name});
-        if(res){
+        if(typeof res !== 'string'){
 
             toast.success("Congrats ! You are registered successfully");
+            localStorage.setItem("user" , JSON.stringify(res));
             dispatch(login(res));
             navigate("/");
             
         }else{
-            toast.error("Couln't Register")
+            toast.error(res);
         }
 
         
