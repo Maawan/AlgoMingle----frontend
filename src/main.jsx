@@ -16,6 +16,8 @@ import Lobby from "./pages/Interview/Lobby.jsx";
 import Signout from "./pages/Signout.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
+import { SocketProvider } from "./context/SocketProvider.jsx";
+import InterviewSession from "./pages/Interview/InterviewSession.jsx";
 
 const router = createBrowserRouter([
   {
@@ -27,43 +29,47 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path : "/login",
-        element: <Signin />
+        path: "/login",
+        element: <Signin />,
       },
       {
         path: "/register",
-        element: <Register />
+        element: <Register />,
       },
       {
-        path : "/mock-interview-with-friend",
-        element:<MockInterviewWithFriend />
+        path: "/mock-interview-with-friend",
+        element: <MockInterviewWithFriend />,
       },
       {
-        path : "/interview/lobby",
-        element : <Lobby />
+        path: "/interview/lobby",
+        element: <Lobby />,
       },
       {
-        path : "/logout",
-        element : <Signout />
+        path : "/interview/session/:roomId",
+        element: <InterviewSession />
       },
       {
-        path : "/forgotpassword",
-        element: <ForgotPassword />
+        path: "/logout",
+        element: <Signout />,
       },
       {
-        path : "/reset/password/:forgotToken",
-        element : <ResetPassword />
-      }
+        path: "/forgotpassword",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "/reset/password/:forgotToken",
+        element: <ResetPassword />,
+      },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <Toaster 
-    position="bottom-center"
-    reverseOrder={false}/>
-    <Loading />
-    <RouterProvider router={router} />
+    <SocketProvider>
+      <Toaster position="bottom-center" reverseOrder={false} />
+      <Loading />
+      <RouterProvider router={router} />
+    </SocketProvider>
   </Provider>
 );

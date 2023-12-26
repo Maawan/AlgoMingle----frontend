@@ -9,8 +9,8 @@ const userSlice = createSlice({
     reducers : {
         login: (state , action)=>{
             if(action.payload !== null){
-                const {tempToken , user} = action.payload;
-            state.token = tempToken;
+                const {token , user} = action.payload;
+            state.token = token;
             state.userData = user;
             }
             

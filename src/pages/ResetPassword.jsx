@@ -29,6 +29,7 @@ const ResetPassword = () => {
 
     useEffect(()=>{
         validateForgotToken();
+        
         return () => {
             validateForgotToken;
         }

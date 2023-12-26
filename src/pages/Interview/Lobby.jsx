@@ -3,36 +3,85 @@ import ReactPlayer from "react-player";
 import Button from "../../components/Button";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useSocket } from "../../context/SocketProvider";
+import interviewService from "../../services/InterviewService";
 
 const Lobby = () => {
+  
+  const [searchParams] = useSearchParams();
+  const roomId = searchParams.get("roomId");
+  useEffect(()=>{
+    checkInterviewId();
+  },[roomId])
+
   const navigate = useNavigate();
   const [audioOn, setAudioOn] = useState(false);
   const [videoOn, setVideoOn] = useState(false);
   const [isCameraOn, setCameraOn] = useState(false);
   const [myStream, setMyStream] = useState(null);
   const [notFirstRender, setNotFirstRender] = useState(false);
+
+  const socket = useSocket();
+
   const isLoggedIn = useSelector((state) => state.user.userData);
+
   if (!isLoggedIn) {
     toast.error("You need to first login to continue");
     navigate("/login");
   }
+
+  const sendConnectionSignalToServer = async () => {
+    
+    socket.emit("interview_init", {
+      roomId,
+      user : isLoggedIn
+    });
+  };
+
+  const checkInterviewId = async () => {
+    const result = await interviewService.checkInterviewId(roomId);
+    if(typeof result === 'string'){
+      toast.error("You are not allowed to enter this interview");
+      navigate("/");
+    }
+  }
+
+  const messageRecievedFromServer = (data) => {
+      toast.success(data)
+  }
+
   useEffect(() => {
-    console.log(notFirstRender + " just mounted ");
+    socket.on("message" , messageRecievedFromServer);
+    console.log("Message Recieved from Server");
+    return () => {
+      socket.off("messsage" , messageRecievedFromServer);
+    }
+  },[socket])
+
+  useEffect(()=>{
+    if(isLoggedIn){
+
+        sendConnectionSignalToServer();
+    }
+  },[isLoggedIn]);
+
+
+  
+
+  useEffect(() => {
+    
     if (notFirstRender) {
       closeAudio();
       closeVideo();
-      console.log("audio : ", audioOn, " VideoOn ", videoOn);
       SwitchOnAudioOrVideo(audioOn, videoOn);
     }
-    console.log("Runnin");
     setNotFirstRender(true);
     return () => {};
   }, [audioOn, videoOn]);
 
   const initalizeStream = async (audioVal, videoVal) => {
     try {
-      console.log("Audio Val ", audioVal, "Video Val ", videoVal);
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: audioVal,
         video: videoVal,
@@ -40,7 +89,6 @@ const Lobby = () => {
       setMyStream(stream);
     } catch (error) {
       if (audioVal || videoVal) {
-        console.log(error);
         toast.error("Please Allow Camera and Mic access");
         closeAudio();
         closeVideo();
@@ -71,24 +119,6 @@ const Lobby = () => {
         }
       });
     }
-  };
-  const isVideoRunning = () => {
-    if (myStream === null) return false;
-    myStream.getTracks().forEach((track) => {
-      if (track.kind === "video") {
-        return true;
-      }
-    });
-    return false;
-  };
-  const isAudioRunning = () => {
-    if (myStream === null) return false;
-    myStream.getTracks().forEach((track) => {
-      if (track.kind === "audio") {
-        return true;
-      }
-    });
-    return false;
   };
 
   return (
@@ -134,7 +164,6 @@ const Lobby = () => {
                   class="sr-only peer"
                   checked={videoOn}
                   onChange={(e) => {
-                    console.log("Hititng");
                     setVideoOn((prev) => !prev);
                   }}
                 />
@@ -150,7 +179,6 @@ const Lobby = () => {
                   class="sr-only peer"
                   checked={audioOn}
                   onChange={(e) => {
-                    console.log("Hitted");
                     setAudioOn(!audioOn);
                   }}
                 />
@@ -165,7 +193,9 @@ const Lobby = () => {
               the mock interview session
             </p>
 
-            <p className="bg-[#FFCE6D] p-2 mt-4 border-2  transition-all duration-500 hover:bg-[#4DB6AC] hover:text-white border-[#563F15] rounded-md ">Interview Room is Empty</p>
+            <p className="bg-[#FFCE6D] p-2 mt-4 border-2  transition-all duration-500 hover:bg-[#4DB6AC] hover:text-white border-[#563F15] rounded-md ">
+              Interview Room is Empty
+            </p>
             <div
               className=" cursor-pointer w-[400px] rounded-[50px] bg-[#FFCE6D] h-[50px] border-4 border-[#563F15] mt-5 flex justify-center items-center overflow-hidden"
               onClick={(e) => {
@@ -176,7 +206,9 @@ const Lobby = () => {
                 https://www.algomingle.com/interview/6...
               </p>
             </div>
-            <Button className={"mt-6"} value={"Start Interview Session"} />
+            <Button className={"mt-6"} value={"Start Interview Session"} onClick={(e)=>{
+              //sendConnectionSignalToServer();
+            }} />
           </div>
         </div>
       </div>
