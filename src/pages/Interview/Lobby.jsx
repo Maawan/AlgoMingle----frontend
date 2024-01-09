@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useSocket } from "../../context/SocketProvider";
 import interviewService from "../../services/InterviewService";
+import SmallHeader from "../../components/SmallHeader";
 
 const Lobby = () => {
   
@@ -26,18 +27,14 @@ const Lobby = () => {
 
   const isLoggedIn = useSelector((state) => state.user.userData);
 
-  if (!isLoggedIn) {
-    toast.error("You need to first login to continue");
-    navigate("/login");
-  }
-
-  const sendConnectionSignalToServer = async () => {
+  
+  // const sendConnectionSignalToServer = async () => {
     
-    socket.emit("interview_init", {
-      roomId,
-      user : isLoggedIn
-    });
-  };
+  //   socket.emit("interview_init", {
+  //     roomId,
+  //     user : isLoggedIn
+  //   });
+  // };
 
   const checkInterviewId = async () => {
     const result = await interviewService.checkInterviewId(roomId);
@@ -51,20 +48,20 @@ const Lobby = () => {
       toast.success(data)
   }
 
-  useEffect(() => {
-    socket.on("message" , messageRecievedFromServer);
-    console.log("Message Recieved from Server");
-    return () => {
-      socket.off("messsage" , messageRecievedFromServer);
-    }
-  },[socket])
+  // useEffect(() => {
+  //   socket.on("message" , messageRecievedFromServer);
+  //   console.log("Message Recieved from Server");
+  //   return () => {
+  //     socket.off("messsage" , messageRecievedFromServer);
+  //   }
+  // },[socket])
 
-  useEffect(()=>{
-    if(isLoggedIn){
+  // useEffect(()=>{
+  //   if(isLoggedIn){
 
-        sendConnectionSignalToServer();
-    }
-  },[isLoggedIn]);
+  //       sendConnectionSignalToServer();
+  //   }
+  // },[isLoggedIn]);
 
 
   
@@ -123,16 +120,7 @@ const Lobby = () => {
 
   return (
     <>
-      <div className="w-full h-20 border bg-[#F5F3F0] flex justify-center items-center shadow-orange-300 shadow-md">
-        <div className="absolute h-20 w-full flex">
-          <div className="w-2/6  h-full flex justify-center items-center">
-            <img src="/logos/logo13.png" className="h-full" alt="" />
-            <img src="/logos/logo14.png" className="h-full" alt="" />
-          </div>
-          <div className="w-4/6"></div>
-        </div>
-        <p className="text-[20px] font-lumanosimo font-bold">Interview Lobby</p>
-      </div>
+      <SmallHeader heading = {"Interview Lobby"} />
       <div className="w-full h-screen bg-[url('/wal/wal1.png')] flex  justify-center ">
         <div className="w-[1100px] h-[500px] mt-[50px] border-2 border-[#FFCE6D] flex bg-white rounded-xl shadow">
           <div className="w-[53%] p-4 flex flex-col justify-center overflow-hidden items-center">
@@ -187,10 +175,10 @@ const Lobby = () => {
             </div>
           </div>
           <div className="w-[47%]  flex flex-col justify-center items-center">
-            <p className="text-xl font-lumanosimo font-semibold">Hi user,</p>
+            <p className="text-xl font-lumanosimo font-semibold">Hi {isLoggedIn?.name},</p>
             <p className="text-center font-extralight mx-4 ">
               Copy the below link and share it with your friend to join him/her
-              the mock interview session
+              the interview session
             </p>
 
             <p className="bg-[#FFCE6D] p-2 mt-4 border-2  transition-all duration-500 hover:bg-[#4DB6AC] hover:text-white border-[#563F15] rounded-md ">
@@ -207,7 +195,7 @@ const Lobby = () => {
               </p>
             </div>
             <Button className={"mt-6"} value={"Start Interview Session"} onClick={(e)=>{
-              //sendConnectionSignalToServer();
+              navigate(`/interview/session/${roomId}?camera=${videoOn}&mic=${audioOn}`)
             }} />
           </div>
         </div>
