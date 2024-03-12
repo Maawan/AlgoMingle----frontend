@@ -26,7 +26,7 @@ const InterviewSession = () => {
   const [codeItBtn, setCodeItBtn] = useState(false);
   const [canvasBtn, setCanvasBtn] = useState(false);
   const [remoteStream , setRemoteStream] = useState(null);
-  const [remoteSocketId , setRemoteSocketId] = useState(null);
+  // const [remoteSocketId , setRemoteSocketId] = useState(null);
 
   
   const handleUserJoined = useCallback(({ message }) => {
