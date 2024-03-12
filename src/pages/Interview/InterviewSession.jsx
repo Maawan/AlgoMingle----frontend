@@ -16,7 +16,7 @@ const InterviewSession = () => {
   const [search] = useSearchParams();
   const socket = useSocket();
   const navigate = useNavigate();
-  // const peer = new Peer();
+  
   const [camera, setCamera] = useState(
     search.get("camera") === "true" ? true : false
   );
@@ -26,7 +26,6 @@ const InterviewSession = () => {
   const [codeItBtn, setCodeItBtn] = useState(false);
   const [canvasBtn, setCanvasBtn] = useState(false);
   const [remoteStream , setRemoteStream] = useState(null);
-  const remoteVideoRef = useRef(new MediaStream([]));
   const [remoteSocketId , setRemoteSocketId] = useState(null);
 
   
@@ -281,7 +280,7 @@ const InterviewSession = () => {
     <>
       <div className="h-screen flex flex-col w-full">
         <SmallHeader
-          heading="Lauda le lo :) 5.7 inches ka hai mera"
+          heading=""
           height="70px"
         />
         <div className="h-[100%] flex-col flex w-full bg-[url('/wal/wal1.png')]">
@@ -375,10 +374,7 @@ const InterviewSession = () => {
           <ReactPlayer playing height={"100%"} width={"100%"} url={myStream} muted />
         )}
       </div>
-      <video
-      className="h-[300px] w-[300px]  border-red-500 border-2"
-      ref={remoteVideoRef}
-      ></video>
+      
     </>
   );
 };
