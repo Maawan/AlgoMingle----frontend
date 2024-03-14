@@ -7,8 +7,8 @@ import GroupRadioButton from "../../components/GroupRadioButton";
 import ReactPlayer from "react-player";
 import toast from "react-hot-toast";
 import { SyncLoader } from "react-spinners";
-import peer from "../../services/peer"
 import { useSocket } from "../../context/SocketProvider";
+import peer from "../../services/peer";
 
 
 const InterviewSession = () => {
@@ -46,10 +46,10 @@ const InterviewSession = () => {
   },[remoteSocketId]);
 
   const sendStreams = useCallback(async()=>{
-    console.log("Trying to send the streams " , myStream);
     
-      const stream = await navigator.mediaDevices.getUserMedia({audio : true , video : true});
-
+    const stream = await navigator.mediaDevices.getUserMedia({audio : true , video : true});
+    
+    console.log("Trying to send the streams " , stream);
     
     for(const track of stream.getTracks()){
         peer.peer.addTrack(track , stream);
@@ -109,6 +109,16 @@ useEffect(() => {
     await peer.setLocalDescription(ans);  
   } , []);
 
+  const handleUserDisconnected = useCallback(async () => {
+    setRemoteSocketId(null);
+    setRemoteStream(null);
+    //await peer.reInit();
+  },[])
+
+  const handleUserJoined = useCallback(() => {
+    // window.location.reload();
+  }, []);
+
   useEffect(() => {
     socket.on("start_the_connection_process" , startTheProcess);
     socket.on("incommming:call" , handleIncommingCall);
@@ -116,17 +126,22 @@ useEffect(() => {
     socket.on("send_streams_server" , handleSendStreams)
     socket.on("peer:nego:needed_server" , handleNegoNeededServer);
     socket.on("peer:nego:final_server" , handleNegoDone);
+    socket.on("user:disconnected" , handleUserDisconnected);
+    socket.on("user:joined" , handleUserJoined);
 
     return () => {
       socket.off("start_the_connection_process" , startTheProcess);
       socket.off("incommming:call" , handleIncommingCall);
+      socket.off("user:joined" , handleUserJoined);
       socket.off("send_streams_server" , handleSendStreams)
       socket.off("server:call_accepted" , handleCallAccepted)
       socket.off("peer:nego:needed_server" , handleNegoNeededServer);
       socket.off("peer:nego:final_server" , handleNegoDone);
+      socket.off("user:disconnected" , handleUserDisconnected);
+
       
     }
-  } , [socket , startTheProcess , handleCallAccepted , handleIncommingCall])
+  } , [socket , startTheProcess , handleCallAccepted , handleIncommingCall , handleUserJoined])
 
   const handleNegoNeeded = useCallback(async () => {
     const offer = await peer.getOffer();
@@ -166,7 +181,7 @@ useEffect(() => {
             ${videoInteractionBtn ? "ring-4" : ""}
              ring-[#563F15] overflow-hidden`}
             >
-              {!camera ? (
+              {!remoteSocketId ? (
                 <p className="text-white font-semibold">Video is unavailable</p>
               ) : remoteStream == null ? (
                 <SyncLoader color="#FBCB6B" />
