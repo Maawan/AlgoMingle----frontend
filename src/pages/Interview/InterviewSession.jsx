@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useSearchParams } from "react-router-dom";
 import SmallHeader from "../../components/SmallHeader";
@@ -10,9 +10,136 @@ import { SyncLoader } from "react-spinners";
 import peer from "../../services/peer"
 import { useSocket } from "../../context/SocketProvider";
 
-let count = 0;
+
 const InterviewSession = () => {
+  const socket = useSocket();
+  const {roomId} = useParams();
+  const [camera , setCamera] = useState(true);
+  const [mic , setMic] = useState(useSearchParams("mic") === true ? true : false);
+  const [videoInteractionBtn,setVideoInteractionBtn] = useState(true);
+  const [codeItBtn , setCodeItBtn] = useState(false);
+  const [canvasBtn , setCanvasBtn] = useState(false);
+  const [remoteStream , setRemoteStream] = useState();
+  const [remoteSocketId , setRemoteSocketId] = useState();
+  const [myStream , setMyStream] = useState();
   
+  const openCameraAndMic = useCallback(async()=> {
+    const stream = await navigator.mediaDevices.getUserMedia({audio : true , video : true})
+    setMyStream(stream);
+  } , []);
+
+  useEffect(() => {
+    console.log("Camera value is changed " , camera);
+  } , [camera])
+
+  useEffect(() => {
+    console.log(roomId , "this is the roomId");
+    socket.emit("interview_init" , {roomId});
+    openCameraAndMic();
+  } , [socket])
+  
+  const startTheProcess = useCallback(async({oponentSocketId}) => {
+    console.log("Yup ! I have got reqest to start the connection",oponentSocketId);
+    setRemoteSocketId(oponentSocketId);
+    console.log("Oponent Socker id " , oponentSocketId);
+    initiateTheCall(oponentSocketId);
+  },[remoteSocketId]);
+
+  const sendStreams = useCallback(async()=>{
+    console.log("Trying to send the streams " , myStream);
+    
+      const stream = await navigator.mediaDevices.getUserMedia({audio : true , video : true});
+
+    
+    for(const track of stream.getTracks()){
+        peer.peer.addTrack(track , stream);
+    }
+},[myStream])
+
+useEffect(() => {
+  peer.peer.addEventListener('track' , async ev => {
+      const remoteSteam = ev.streams;
+      console.log("Got trancks ");
+      setRemoteStream(remoteSteam[0]);
+  })
+} , [])
+
+  const initiateTheCall = useCallback(async (oponentSocketId) => {
+    const stream = await navigator.mediaDevices.getUserMedia({audio : true , video : true});
+    setMyStream(stream);
+    const offer = await peer.getOffer();
+    socket.emit("user:call" , {to : oponentSocketId , offer});
+  } , [])
+
+
+  const handleIncommingCall = useCallback(async({from , offer})=>{
+    console.log("I am getting a call ...");
+    setRemoteSocketId(from);
+    const stream = await navigator.mediaDevices.getUserMedia({audio : true , video : true})
+    setMyStream(stream);
+    const ans = await peer.getAnswer(offer);
+    socket.emit("call:accepted" , {to : from , ans});
+  },[])
+
+  const handleCallAccepted = useCallback(async({from , ans}) => {
+    console.log("Yes !!! Call is accepted");
+    await peer.setLocalDescription(ans);
+    //sendStreams();
+    setTimeout(() => {
+      sendStreams();
+    },1000);
+    setTimeout(() => {
+      socket.emit("send_stream_please" , {to : from});
+
+    },2000);
+
+
+  } , [sendStreams])
+
+  const handleSendStreams = useCallback(() => {
+    sendStreams();
+  },[])
+
+  const handleNegoNeededServer = useCallback(async({from , offer}) => {
+    const ans = await peer.getAnswer(offer);
+    socket.emit("peer:nego:done" , {to : from , ans});
+  } , []);
+
+  const handleNegoDone = useCallback(async({ans}) => {
+    await peer.setLocalDescription(ans);  
+  } , []);
+
+  useEffect(() => {
+    socket.on("start_the_connection_process" , startTheProcess);
+    socket.on("incommming:call" , handleIncommingCall);
+    socket.on("server:call_accepted" , handleCallAccepted)
+    socket.on("send_streams_server" , handleSendStreams)
+    socket.on("peer:nego:needed_server" , handleNegoNeededServer);
+    socket.on("peer:nego:final_server" , handleNegoDone);
+
+    return () => {
+      socket.off("start_the_connection_process" , startTheProcess);
+      socket.off("incommming:call" , handleIncommingCall);
+      socket.off("send_streams_server" , handleSendStreams)
+      socket.off("server:call_accepted" , handleCallAccepted)
+      socket.off("peer:nego:needed_server" , handleNegoNeededServer);
+      socket.off("peer:nego:final_server" , handleNegoDone);
+      
+    }
+  } , [socket , startTheProcess , handleCallAccepted , handleIncommingCall])
+
+  const handleNegoNeeded = useCallback(async () => {
+    const offer = await peer.getOffer();
+    socket.emit("peer:nego:needed" , {offer , to:remoteSocketId})
+  },[remoteSocketId , socket])
+
+  useEffect(() => {
+    peer.peer.addEventListener("negotiationneeded" , handleNegoNeeded);
+    return () => {
+        peer.peer.removeEventListener("negotiationneeded" , handleNegoNeeded);
+    }
+} , [handleNegoNeeded])
+
   return (
     <>
       <div className="h-screen flex flex-col w-full">
