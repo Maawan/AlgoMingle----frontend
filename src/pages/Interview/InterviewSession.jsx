@@ -5,7 +5,6 @@ import SmallHeader from "../../components/SmallHeader";
 import IconSwitch from "../../components/IconSwitch";
 import GroupRadioButton from "../../components/GroupRadioButton";
 import ReactPlayer from "react-player";
-import toast from "react-hot-toast";
 import { SyncLoader } from "react-spinners";
 import { useSocket } from "../../context/SocketProvider";
 import peer from "../../services/peer";
@@ -15,7 +14,7 @@ const InterviewSession = () => {
   const socket = useSocket();
   const {roomId} = useParams();
   const [camera , setCamera] = useState(true);
-  const [mic , setMic] = useState(useSearchParams("mic") === true ? true : false);
+  const [mic , setMic] = useState(true);
   const [videoInteractionBtn,setVideoInteractionBtn] = useState(true);
   const [codeItBtn , setCodeItBtn] = useState(false);
   const [canvasBtn , setCanvasBtn] = useState(false);
@@ -47,19 +46,36 @@ const InterviewSession = () => {
 
   const sendStreams = useCallback(async()=>{
     
-    const stream = await navigator.mediaDevices.getUserMedia({audio : true , video : true});
+    const stream = await navigator.mediaDevices.getUserMedia({audio : mic , video : camera});
     
     console.log("Trying to send the streams " , stream);
-    
+    setMyStream(stream);
     for(const track of stream.getTracks()){
         peer.peer.addTrack(track , stream);
     }
-},[myStream])
+},[myStream , mic , camera])
+
+useEffect(() => {
+  if(myStream !== null && myStream !== undefined){
+    let videoTrack = myStream.getTracks().find(track => track.kind === 'video');
+    let audioTrack = myStream.getTracks().find(track => track.kind === 'audio');
+    if(!camera){
+      videoTrack.enabled = false;
+    }else{
+      videoTrack.enabled = true;
+    }
+    if(!mic){
+      audioTrack.enabled = false;
+    }else{
+      audioTrack.enabled = true;
+    }
+  }
+} , [camera , mic])
 
 useEffect(() => {
   peer.peer.addEventListener('track' , async ev => {
       const remoteSteam = ev.streams;
-      console.log("Got trancks ");
+      console.log("Got tracks ");
       setRemoteStream(remoteSteam[0]);
   })
 } , [])
@@ -245,12 +261,12 @@ useEffect(() => {
           !videoInteractionBtn ? "h-[150px] ring-4" : "h-[0px]"
         } w-[200px]  transition-all mr-2 mt-2 rounded-md shadow-orange-500 shadow-lg duration-1000 ring-[#563F15] flex overflow-hidden justify-center items-center fixed top-0 right-0 bg-[#1e1e1e]`}
       >
-        {!camera ? (
+        {!remoteStream ? (
           <p className="text-white font-semibold">Camera is off</p>
         ) : myStream == null ? (
           <SyncLoader color="#FBCB6B" />
         ) : (
-          <ReactPlayer playing height={"100%"} width={"100%"} url={myStream} muted />
+          <ReactPlayer playing height={"100%"} width={"100%"} url={remoteStream} muted />
         )}
       </div>
       
