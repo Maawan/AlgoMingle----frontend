@@ -51,6 +51,7 @@ export class AuthService{
             if(error.response.status === 409){
                 return "Email already in use"
             }
+            console.log(error);
             return "Something is wrong, try after some time"
             
 

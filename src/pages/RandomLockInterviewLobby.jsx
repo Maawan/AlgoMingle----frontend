@@ -13,10 +13,11 @@ const MockInterviewWithFriend = () => {
 
   const createInterviewSession = async () => {
     if(!token){
-      console.log("Token is null");
-      token = await useSelector((state)=>state.user.token);
+      toast.error("You need to first login");
+      navigate("/login");
+      return;
     }
-    console.log("Create Session ");
+    
     dispatch(enableLoading());
     const result = await interviewService.createInterviewSession(token);
     if (typeof result === 'string') {

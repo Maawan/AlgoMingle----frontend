@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { useSearchParams } from "react-router-dom";
 import SmallHeader from "../../components/SmallHeader";
 import IconSwitch from "../../components/IconSwitch";
 import GroupRadioButton from "../../components/GroupRadioButton";
@@ -8,10 +7,14 @@ import ReactPlayer from "react-player";
 import { SyncLoader } from "react-spinners";
 import { useSocket } from "../../context/SocketProvider";
 import peer from "../../services/peer";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import authService from "../../services/AuthService";
 
 
 const InterviewSession = () => {
   const socket = useSocket();
+  const navigate = useNavigate();
   const {roomId} = useParams();
   const [camera , setCamera] = useState(true);
   const [mic , setMic] = useState(true);
@@ -21,6 +24,19 @@ const InterviewSession = () => {
   const [remoteStream , setRemoteStream] = useState();
   const [remoteSocketId , setRemoteSocketId] = useState();
   const [myStream , setMyStream] = useState();
+
+  const user = useSelector((state) => state.user);
+  let token = null;
+
+  useEffect(() => {
+    console.log("This is working ...");
+    if(user.userData === null || user.userData === undefined){
+      toast.error("You are not logged in");
+      navigate("/");
+    }else{
+      sendStartInterviewSignalToServer();
+    }
+  } , []);
   
   const openCameraAndMic = useCallback(async()=> {
     const stream = await navigator.mediaDevices.getUserMedia({audio : true , video : true})
@@ -31,15 +47,18 @@ const InterviewSession = () => {
     console.log("Camera value is changed " , camera);
   } , [camera])
 
-  useEffect(() => {
-    console.log(roomId , "this is the roomId");
-    socket.emit("interview_init" , {roomId});
+  const sendStartInterviewSignalToServer = useCallback(async() => {
+    
+    socket.emit("interview_init" , {roomId , name : user?.userData?.name});
     openCameraAndMic();
-  } , [socket])
+  } , [])
   
-  const startTheProcess = useCallback(async({oponentSocketId}) => {
+  
+  
+  const startTheProcess = useCallback(async({oponentSocketId , name}) => {
     console.log("Yup ! I have got reqest to start the connection",oponentSocketId);
     setRemoteSocketId(oponentSocketId);
+    toast.success(`${name} has joined`);
     console.log("Oponent Socker id " , oponentSocketId);
     initiateTheCall(oponentSocketId);
   },[remoteSocketId]);
@@ -135,6 +154,11 @@ useEffect(() => {
     // window.location.reload();
   }, []);
 
+  const handleUnableToAcess = useCallback(() => {
+    toast.error("At max 2 persons can only join");
+    navigate("/");
+  } , []);
+
   useEffect(() => {
     socket.on("start_the_connection_process" , startTheProcess);
     socket.on("incommming:call" , handleIncommingCall);
@@ -144,6 +168,7 @@ useEffect(() => {
     socket.on("peer:nego:final_server" , handleNegoDone);
     socket.on("user:disconnected" , handleUserDisconnected);
     socket.on("user:joined" , handleUserJoined);
+    socket.on("401-restricted" , handleUnableToAcess);
 
     return () => {
       socket.off("start_the_connection_process" , startTheProcess);
@@ -154,6 +179,7 @@ useEffect(() => {
       socket.off("peer:nego:needed_server" , handleNegoNeededServer);
       socket.off("peer:nego:final_server" , handleNegoDone);
       socket.off("user:disconnected" , handleUserDisconnected);
+      socket.off("401-restricted" , handleUnableToAcess);
 
       
     }
