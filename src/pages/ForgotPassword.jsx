@@ -15,14 +15,33 @@ const ForgotPassword = () => {
     const handleSubmit = async() => {
         dispatch(enableLoading());
         if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-            toast.error("Invalid email");
+            toast.error("Invalid email",{
+              style: {
+                  borderRadius: '10px',
+                  background: '#563F15',
+                  color: '#FFCE6D',
+              },
+            });
+            dispatch(disableLoading());
             return;
         }
         const result = await authService.forgotPassword({email});
         if(typeof result === 'string'){
-            toast.error(result);
+            toast.error(result,{
+              style: {
+                  borderRadius: '10px',
+                  background: '#563F15',
+                  color: '#FFCE6D',
+              },
+            });
         }else{
-            toast.success("Password Reset link has been sent to your mail address")
+            toast.success("Password Reset link has been sent to your mail address",{
+              style: {
+                  borderRadius: '10px',
+                  background: '#563F15',
+                  color: '#FFCE6D',
+              },
+            })
             navigate("/");
         }
         dispatch(disableLoading());

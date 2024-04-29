@@ -13,7 +13,13 @@ const MockInterviewWithFriend = () => {
 
   const createInterviewSession = async () => {
     if(!token){
-      toast.error("You need to first login");
+      toast.error("You need to first login",{
+        style: {
+            borderRadius: '10px',
+            background: '#563F15',
+            color: '#FFCE6D',
+        },
+      });
       navigate("/login");
       return;
     }
@@ -21,7 +27,13 @@ const MockInterviewWithFriend = () => {
     dispatch(enableLoading());
     const result = await interviewService.createInterviewSession(token);
     if (typeof result === 'string') {
-      toast.error(result);
+      toast.error(result,{
+        style: {
+            borderRadius: '10px',
+            background: '#563F15',
+            color: '#FFCE6D',
+        },
+      });
     } else {
       navigate(`/interview/lobby?roomId=${result.interview_room_id}`);
     }

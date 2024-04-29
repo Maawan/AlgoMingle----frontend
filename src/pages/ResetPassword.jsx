@@ -39,7 +39,13 @@ const ResetPassword = () => {
         dispatch(enableLoading());
         const result = await authService.checkForgotToken(forgotToken);
         if(!result){
-            toast.error("Reset Link is invalid");
+            toast.error("Reset Link is invalid",{
+              style: {
+                  borderRadius: '10px',
+                  background: '#563F15',
+                  color: '#FFCE6D',
+              },
+            });
             navigate("/");
         }
         dispatch(disableLoading());
@@ -49,23 +55,53 @@ const ResetPassword = () => {
     const handleSubmit = async () => {
         dispatch(enableLoading());
         if(password !== secondPassword){
-            toast.error("Password Mismatch");
+            toast.error("Password Mismatch",{
+              style: {
+                  borderRadius: '10px',
+                  background: '#563F15',
+                  color: '#FFCE6D',
+              },
+            });
             return;
         }
         if(!charsIncluded){
-            toast.error("Password should contain Numbers and Characters")
+            toast.error("Password should contain Numbers and Characters",{
+              style: {
+                  borderRadius: '10px',
+                  background: '#563F15',
+                  color: '#FFCE6D',
+              },
+            })
             return;
         }
         if(password.length < 8){
-            toast.error("Password length should be atleast 8 ");
+            toast.error("Password length should be atleast 8 ",{
+              style: {
+                  borderRadius: '10px',
+                  background: '#563F15',
+                  color: '#FFCE6D',
+              },
+            });
             return;
         }
         try {
             const res = authService.resetPassword({token:forgotToken,password});
-            toast.success("Password changed successfully");
+            toast.success("Password changed successfully",{
+              style: {
+                  borderRadius: '10px',
+                  background: '#563F15',
+                  color: '#FFCE6D',
+              },
+            });
             navigate("/login");
         } catch (error) {
-            toast.error("Something went wrong ! Retry after sometime")
+            toast.error("Something went wrong ! Retry after sometime",{
+              style: {
+                  borderRadius: '10px',
+                  background: '#563F15',
+                  color: '#FFCE6D',
+              },
+            })
         }
         dispatch(disableLoading());
 

@@ -39,13 +39,25 @@ const Lobby = () => {
   const checkInterviewId = async () => {
     const result = await interviewService.checkInterviewId(roomId);
     if(typeof result === 'string'){
-      toast.error("You are not allowed to enter this interview");
+      toast.error("You are not allowed to enter this interview",{
+        style: {
+            borderRadius: '10px',
+            background: '#563F15',
+            color: '#FFCE6D',
+        },
+      });
       navigate("/");
     }
   }
 
   const messageRecievedFromServer = (data) => {
-      toast.success(data)
+      toast.success(data,{
+        style: {
+            borderRadius: '10px',
+            background: '#563F15',
+            color: '#FFCE6D',
+        },
+      })
   }
 
   // useEffect(() => {
@@ -86,7 +98,13 @@ const Lobby = () => {
       setMyStream(stream);
     } catch (error) {
       if (audioVal || videoVal) {
-        toast.error("Please Allow Camera and Mic access");
+        toast.error("Please Allow Camera and Mic access",{
+          style: {
+              borderRadius: '10px',
+              background: '#563F15',
+              color: '#FFCE6D',
+          },
+        });
         closeAudio();
         closeVideo();
         setAudioOn(false);
@@ -187,7 +205,13 @@ const Lobby = () => {
             <div
               className=" cursor-pointer w-[400px] rounded-[50px] bg-[#FFCE6D] h-[50px] border-4 border-[#563F15] mt-5 flex justify-center items-center overflow-hidden"
               onClick={(e) => {
-                toast.success("Link Copied to your clipboard");
+                toast.success("Link Copied to your clipboard",{
+                  style: {
+                      borderRadius: '10px',
+                      background: '#563F15',
+                      color: '#FFCE6D',
+                  },
+                });
               }}
             >
               <p className=" font-poppins text-md font-bold text-[#563F15]">

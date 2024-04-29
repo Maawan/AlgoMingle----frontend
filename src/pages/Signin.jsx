@@ -23,11 +23,23 @@ const Signin = () => {
 
   const handleLoginSubmit = async () => {
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-      toast.error("Invalid Email Address");
+      toast.error("Invalid Email Address",{
+        style: {
+            borderRadius: '10px',
+            background: '#563F15',
+            color: '#FFCE6D',
+        },
+      });
       return;
     }
     if(password.length < 8){
-      toast.error("Password should not be less than 8 characters");
+      toast.error("Password should not be less than 8 characters",{
+        style: {
+            borderRadius: '10px',
+            background: '#563F15',
+            color: '#FFCE6D',
+        },
+      });
       return;
     }
 
@@ -38,7 +50,13 @@ const Signin = () => {
       if(typeof result === 'string'){
         toast.error(result)
       }else{
-        toast.success("Congrats ! You are logged in");
+        toast.success("Congrats ! You are logged in",{
+          style: {
+              borderRadius: '10px',
+              background: '#563F15',
+              color: '#FFCE6D',
+          },
+        });
         const impData = {
           token : result.token,
           user : result.user
@@ -51,7 +69,13 @@ const Signin = () => {
       }
     } catch (error) {
       console.log(error);
-      toast.error("Invalid Credentails")
+      toast.error("Invalid Credentails",{
+        style: {
+            borderRadius: '10px',
+            background: '#563F15',
+            color: '#FFCE6D',
+        },
+      })
     }finally{
       dispatch(disableLoading());
     }

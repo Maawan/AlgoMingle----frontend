@@ -51,18 +51,37 @@ const Register = () => {
         const res = await authService.signUp({email , password , name});
         if(typeof res !== 'string'){
 
-            toast.success("Congrats ! You are registered successfully");
+            toast.success("Congrats ! You are registered successfully" , {
+              style: {
+                  borderRadius: '10px',
+                  background: '#333',
+                  color: '#fff',
+              },
+            });
+            
             localStorage.setItem("user" , JSON.stringify(res));
             dispatch(login(res));
             navigate("/");
             
         }else{
-            toast.error(res);
+            toast.error(res,{
+              style: {
+                  borderRadius: '10px',
+                  background: '#563F15',
+                  color: '#FFCE6D',
+              },
+            });
         }
 
         
     } catch (error) {
-        toast.error("Something went wrong")
+        toast.error("Something went wrong",{
+          style: {
+              borderRadius: '10px',
+              background: '#563F15',
+              color: '#FFCE6D',
+          },
+        })
     }finally{
         dispatch(disableLoading());
     }
