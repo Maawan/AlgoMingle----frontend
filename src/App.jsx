@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import authService from "./services/AuthService";
 import Footer from "./components/Footer";
 import { useEffect, useState } from "react";
-import { login } from "./store/slices/user";
+import { login, signout } from "./store/slices/user";
 import { useDispatch } from "react-redux";
 import { disableLoading, enableLoading } from "./store/slices/loadingSlice";
 
