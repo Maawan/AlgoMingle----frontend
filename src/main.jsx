@@ -18,7 +18,7 @@ import ForgotPassword from "./pages/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 import { SocketProvider } from "./context/SocketProvider.jsx";
 import InterviewSession from "./pages/Interview/InterviewSession.jsx";
-import About from "./pages/about.jsx";
+import About from "./pages/About.jsx";
 
 const router = createBrowserRouter([
   {
