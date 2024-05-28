@@ -7,6 +7,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useSocket } from "../../context/SocketProvider";
 import interviewService from "../../services/InterviewService";
 import SmallHeader from "../../components/SmallHeader";
+import { baseUrl } from "../../utils/codeEditorInititor";
 
 const Lobby = () => {
   
@@ -28,13 +29,7 @@ const Lobby = () => {
   const isLoggedIn = useSelector((state) => state.user.userData);
 
   
-  // const sendConnectionSignalToServer = async () => {
-    
-  //   socket.emit("interview_init", {
-  //     roomId,
-  //     user : isLoggedIn
-  //   });
-  // };
+ 
 
   const checkInterviewId = async () => {
     const result = await interviewService.checkInterviewId(roomId);
@@ -60,20 +55,7 @@ const Lobby = () => {
       })
   }
 
-  // useEffect(() => {
-  //   socket.on("message" , messageRecievedFromServer);
-  //   console.log("Message Recieved from Server");
-  //   return () => {
-  //     socket.off("messsage" , messageRecievedFromServer);
-  //   }
-  // },[socket])
 
-  // useEffect(()=>{
-  //   if(isLoggedIn){
-
-  //       sendConnectionSignalToServer();
-  //   }
-  // },[isLoggedIn]);
 
 
   
@@ -212,10 +194,11 @@ const Lobby = () => {
                       color: '#FFCE6D',
                   },
                 });
+                navigator.clipboard.writeText(`${baseUrl}interview/lobby?roomId=${roomId}`);
               }}
             >
-              <p className=" font-poppins text-md font-bold text-[#563F15]">
-                https://www.algomingle.com/interview/6...
+              <p className=" font-poppins text-md font-bold text-[#563F15] ">
+                https://algomingle.hayatsoftwares.com/interv..
               </p>
             </div>
             <Button className={"mt-6"} value={"Start Interview Session"} onClick={(e)=>{

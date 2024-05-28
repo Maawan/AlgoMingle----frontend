@@ -16,3 +16,5 @@ export const cppStarterCode = "#include<iostream>\n" +
 
 export const pythonStarterCode = "print(\" Hello World \")"
 export const tsStarterCode = "console.log(\" Hello World \")"
+
+export const baseUrl = "localhost:5173/";

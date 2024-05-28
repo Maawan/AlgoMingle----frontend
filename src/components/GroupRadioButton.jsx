@@ -52,11 +52,11 @@ const GroupRadioButton = ({first , second , third , setFirst , setSecond , setTh
                 }
             }}
         />
-        <div class=" max-w-xl  rounded-md bg-[#FBCB6B] p-2 text-gray-700 ring-2 ring-transparent transition-all hover:shadow peer-checked:bg-[#563F15] peer-checked:text-white peer-checked:font-bold peer-checked:font-lumanosimo peer-checked:ring-[#563F15] peer-checked:ring-offset-2">
+        {/* <div class=" max-w-xl  rounded-md bg-[#FBCB6B] p-2 text-gray-700 ring-2 ring-transparent transition-all hover:shadow peer-checked:bg-[#563F15] peer-checked:text-white peer-checked:font-bold peer-checked:font-lumanosimo peer-checked:ring-[#563F15] peer-checked:ring-offset-2">
           <div class="flex  justify-center items-center gap-1">
             <p>Whiteboard</p>
           </div>
-        </div>
+        </div> */}
       </label>
       
     </div>

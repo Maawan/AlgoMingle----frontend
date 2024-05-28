@@ -151,8 +151,11 @@ const Register = () => {
           />
           <p className="w-[80%] text-sm text-right">
             Already a user ?{" "}
-            <span className="text-[#1e1e1e]   hover:text-[#A53F1F] cursor-pointer">
-              Register Now
+            <span className="text-[#1e1e1e] font-semibold hover:text-[#A53F1F] cursor-pointer"
+            onClick={(e)=>{
+              navigate("/login");
+            }}>
+              Login Now
             </span>
           </p>
         </div>

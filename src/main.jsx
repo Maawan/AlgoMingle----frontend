@@ -18,6 +18,7 @@ import ForgotPassword from "./pages/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 import { SocketProvider } from "./context/SocketProvider.jsx";
 import InterviewSession from "./pages/Interview/InterviewSession.jsx";
+import About from "./pages/about.jsx";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
         path: "/reset/password/:forgotToken",
         element: <ResetPassword />,
       },
+      {
+        path: "/about",
+        element: <About/>
+      }
     ],
   },
 ]);

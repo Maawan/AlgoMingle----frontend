@@ -34,6 +34,7 @@ function App() {
             setFetchingCompleted(true);
           } else {
             dispatch(signout());
+            dispatch(disableLoading());
             console.log("Oops !!! Token is invalid");
             localStorage.setItem("user", null);
             setFetchingCompleted(true);

@@ -110,7 +110,10 @@ const Signin = () => {
               }}
             
             />
-            <p className='w-[80%] text-sm'>New to AlgoMingle ? <span className='text-[#1e1e1e]   hover:text-[#A53F1F] cursor-pointer'>Register Now</span></p>
+            <p className='w-[80%] text-sm text-right'>New to AlgoMingle ? <span className=' font-semibold text-[#1e1e1e]   hover:text-[#A53F1F] cursor-pointer'
+            onClick={(e)=>{
+              navigate("/register")
+            }}>Register Now</span></p>
             </div>
             
         </div>
