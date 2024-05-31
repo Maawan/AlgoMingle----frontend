@@ -11,10 +11,14 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { Editor } from "@monaco-editor/react";
 import { cStarterCode, cppStarterCode, javaStarterCode, pythonStarterCode, tsStarterCode } from "../../utils/codeEditorInititor";
+import OutputDialog from "../../components/OutputDialog";
+import axios from "axios";
 
 
 
 const InterviewSession = () => {
+  const [output , setOutput] = useState("");
+  const [runButtonText , setRunButtonText] = useState("Run Code");
   const [languageStarterCode , setLanguageStarterCode] = useState(javaStarterCode)
   const [language , setLanguage] = useState("java");
   const socket = useSocket();
@@ -29,10 +33,22 @@ const InterviewSession = () => {
   const [remoteStream, setRemoteStream] = useState();
   const [remoteSocketId, setRemoteSocketId] = useState();
   const [myStream, setMyStream] = useState();
+  const [showOutput , setShowOutput] = useState(false);
   const editorRef = useRef();
   const user = useSelector((state) => state.user);
   let token = null;
 
+
+  async function runCode(){
+    if(runButtonText === "Executing..."){
+      toast.error("Executing already in process...");
+      return;
+    }
+    setRunButtonText("Executing...");
+    console.log("Requested ...");
+    console.log("Current Code is " , languageStarterCode);
+    socket.emit("run_code:frontend", { code : languageStarterCode , language: language , roomId });
+  }
 
 
   useEffect(() => {
@@ -40,7 +56,7 @@ const InterviewSession = () => {
   },[language])
 
   useEffect(() => {
-    console.log("This is working ...");
+    //console.log("This is working ...");
     if (user.userData === null || user.userData === undefined) {
       toast.error("You are not logged in",{
         style: {
@@ -231,6 +247,14 @@ const InterviewSession = () => {
     setText(text);
   },[])
 
+
+  const handleInCommingOutput = ({output}) => {
+    setRunButtonText("Run Code")
+    setShowOutput(!showOutput);
+    setOutput(output);
+    
+  }
+
   useEffect(() => {
     socket.on("start_the_connection_process", startTheProcess);
     socket.on("incommming:call", handleIncommingCall);
@@ -243,8 +267,10 @@ const InterviewSession = () => {
     socket.on("401-restricted", handleUnableToAcess);
     socket.on("editorSync" , handleIncommingCodeSync);
     socket.on("textSync" , handleIncommingTextSync);
+    socket.on("code_output" , handleInCommingOutput);
 
     return () => {
+      socket.off("code_output" , handleInCommingOutput);
       socket.off("textSync" , handleIncommingTextSync)
       socket.off("editorSync" , handleIncommingCodeSync)
       socket.off("start_the_connection_process", startTheProcess);
@@ -276,6 +302,11 @@ const InterviewSession = () => {
       peer.peer.removeEventListener("negotiationneeded", handleNegoNeeded);
     };
   }, [handleNegoNeeded]);
+
+  function closeOutput(){
+    setShowOutput(false);
+  }
+
 
   return (
     <>
@@ -377,11 +408,13 @@ const InterviewSession = () => {
                   <option value="c">C</option>
                   <option value="cpp">C++</option>
                   <option value="java" selected>Java JDK 8</option>
-                  <option value="typescript">TypeScript</option>
+                  {/* <option value="typescript">TypeScript</option> */}
                   <option value="python">Python</option>
                 </select>
               <Editor  height={"95%"} width={"100%"} language={language} value={languageStarterCode} ref={editorRef} onChange={(e) => {
                 sendCodeData(e);
+                setLanguageStarterCode(e);
+                // setLanguageStarterCode()
               }} theme="" className="mt-2 rounded-md ring-4 ring-[#FFCE6D]" />
               </div>
             </div>
@@ -413,6 +446,14 @@ const InterviewSession = () => {
             offImage={"/interview/min_off.png"}
           />
         </div>
+
+        <div className={`${!codeItBtn && "hidden"} ml-10 text-[#ED5B2D] font-bold p-4 h-full rounded-xl bg-[#FFCE6D] shadow-[#563F15] shadow-sm hover:shadow-md hover:shadow-[#563F15]  duration-500 transition-all flex justify-center items-center`} onClick={(e)=>{
+          runCode();
+        }}>
+          {runButtonText}
+        </div>
+        
+        
       </div>
       <div
         className={`${
@@ -433,6 +474,8 @@ const InterviewSession = () => {
           />
         )}
       </div>
+        {showOutput ? <OutputDialog closeBtn={closeOutput} output={output} /> : null}
+
     </>
   );
 };

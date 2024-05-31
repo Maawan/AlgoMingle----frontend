@@ -6,7 +6,7 @@ export const useSocket = () => {
     const socket = useContext(SocketContext);
     return socket;
 }
-
+// https://aws.hayatsoftwares.com
 export const SocketProvider = (props) => {
     const socket = useMemo(() => io("https://aws.hayatsoftwares.com"),[])
     return (

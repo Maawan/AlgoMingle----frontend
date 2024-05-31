@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router';
+import OutputDialog from '../components/OutputDialog';
 
 const About = () => {
         const navigate = useNavigate();
@@ -17,7 +18,7 @@ const About = () => {
         <p className='text-center font-poppins text-[10px] tablet:text-[16px]'>A comprehensive mock interview platform for tech folks</p>
         <p className='ml-10 text-[20px] mt-10  font-lumanosimo font-bold'>Who we are </p>
         <p className='ml-10 text-[20px] mt-2 font-poppins'>Welcome to AlgoMingle.com, the ultimate destination for students to hone their interview skills and showcase their talents. Whether you're preparing for mock interviews or participating in real interviews, our platform is designed to provide a seamless and integrated experience. With an inbuilt code editor and compilers, you can write, test, and run your code in real-time, all within the same interface.</p>
-        <p  className='ml-10 text-[20px] mt-4 font-lumanosimo font-bold '>Our Mission</p>
+        <p className='ml-10 text-[20px] mt-4 font-lumanosimo font-bold '>Our Mission</p>
         <p className='ml-10 text-[20px] mt-2 font-poppins'>Our mission is to bridge the gap between academic learning and real-world job requirements by providing students with a comprehensive platform to practice and excel in technical interviews. We believe that preparation is key to success, and our goal is to equip you with the tools and confidence needed to succeed in any interview scenario.</p>
         <p className='ml-10 text-[20px] mt-4 font-lumanosimo font-bold'>What we offer ?</p>
         <p className='ml-10 text-[20px] mt-2 font-poppins'>1. Real-Time Code Editor and Compiler
@@ -46,7 +47,7 @@ Receive detailed feedback and performance analytics after each interview session
         <p className='ml-10 text-[20px] mt-2 font-poppins mb-10'>At AlgoMingle.com, we are committed to helping you achieve your career aspirations. Whether you're a student gearing up for your first job interview or an experienced candidate looking to refine your skills, our platform is here to support your journey. Sign up today and take the first step towards acing your interviews! <span className='cursor-pointer font-bold text-[#ED5B2D] underline' onClick={(e)=>{
                 navigate("/");
         }}>Join Us</span></p>
-    
+    {/* <OutputDialog /> */}
     </div>
   )
 }
